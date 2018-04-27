@@ -18,6 +18,7 @@ class VirtualCatalog(Catalog):
         self._rgb = rgb
         self._nodata = nodata
         self._linear_stretch = linear_stretch
+        self._meta = {}
 
         with get_source(self._uri) as src:
             self._bounds = warp.transform_bounds(src.crs, WGS84_CRS, *src.bounds)
@@ -25,6 +26,22 @@ class VirtualCatalog(Catalog):
                 Bounds(src.bounds, src.crs), (src.height, src.width)
             )
             approximate_zoom = get_zoom(max(self._resolution), op=math.ceil)
+
+            for band in xrange(0, src.count):
+                self._meta["values"] = self._meta.get("values", {})
+                self._meta["values"][band] = {}
+                min_val = src.get_tag_item("STATISTICS_MINIMUM", bidx=band + 1)
+                max_val = src.get_tag_item("STATISTICS_MAXIMUM", bidx=band + 1)
+                mean_val = src.get_tag_item("STATISTICS_MEAN", bidx=band + 1)
+
+                if min_val is not None:
+                    self._meta["values"][band]["min"] = min_val
+
+                if max_val is not None:
+                    self._meta["values"][band]["max"] = max_val
+
+                if mean_val is not None:
+                    self._meta["values"][band]["mean"] = mean_val
 
         self._center = [
             (self._bounds[0] + self.bounds[2]) / 2,
@@ -50,4 +67,11 @@ class VirtualCatalog(Catalog):
         if self._linear_stretch is not None:
             recipes["linear_stretch"] = "per_band"
 
-        yield Source(self._uri, self._name, self._resolution, {}, {}, recipes)
+        yield Source(
+            url=self._uri,
+            name=self._name,
+            resolution=self._resolution,
+            band_info={},
+            meta={},
+            recipes=recipes,
+        )
