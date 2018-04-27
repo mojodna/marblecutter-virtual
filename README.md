@@ -28,7 +28,7 @@ encodeURIComponent("https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurr
 
 ## Endpoints
 
-### `/bounds`
+### `/bounds` - Source image bounds (in geographic coordinates)
 
 #### Parameters
 
@@ -49,7 +49,7 @@ $ curl "http://localhost:8000/bounds?url=https%3A%2F%2Fs3-us-west-2.amazonaws.co
 }
 ```
 
-### Tiles
+### `/tiles/{z}/{x}/{y}.png` - Tiles
 
 #### Parameters
 
@@ -83,7 +83,7 @@ $ curl "http://localhost:8000/tiles/14/3851/6812@2x.png?url=https%3A%2F%2Fs3-us-
 
 ![greyscale stretched](docs/greyscale_stretched.png)
 
-### TileJSON
+### `/tiles` - TileJSON
 
 #### Parameters
 
@@ -115,7 +115,7 @@ $ curl "http://localhost:8000/tiles?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com
 }
 ```
 
-### Preview
+### `/preview` - Preview
 
 #### Parameters
 
