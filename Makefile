@@ -19,10 +19,10 @@ node_modules/.bin/interp:
 	npm install interp
 
 deps/deps.tgz: deps/Dockerfile deps/required.txt
-	docker run --rm --entrypoint tar $$(docker build --build-arg http_proxy=$(http_proxy) -t marblecutter-openaerialmap-deps -q -f $< .) zc -C /var/task . > $@
+	docker run --rm --entrypoint tar $$(docker build --build-arg http_proxy=$(http_proxy) -t marblecutter-virtual-deps -q -f $< .) zc -C /var/task . > $@
 
 clean:
 	rm -f deps/deps.tgz
 
 server:
-	docker build --build-arg http_proxy=$(http_proxy) -t quay.io/mojodna/marblecutter-openaerialmap .
+	docker build --build-arg http_proxy=$(http_proxy) -t quay.io/mojodna/marblecutter-virtual .
