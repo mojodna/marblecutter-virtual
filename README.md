@@ -3,6 +3,9 @@
 I am a tile server for HTTP(S)-accessible [Cloud Optimized GeoTIFFs
 (COGs)](http://www.cogeo.org/).
 
+I can also be seen as an example of a virtual `Catalog` implementation, drawing
+necessary metadata from URL parameters. For more information, check out [`VirtualCatalog`](virtual/catalogs.py) and [`web.py`](virtual/web.py).
+
 ## Running Locally
 
 The easiest way to get a working instance running locally is to use [Docker
