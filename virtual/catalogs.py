@@ -1,10 +1,14 @@
 # coding=utf-8
 
+import logging
 import math
+
 from marblecutter import Bounds, get_resolution_in_meters, get_source, get_zoom
 from marblecutter.catalogs import WGS84_CRS, Catalog
 from marblecutter.utils import Source
 from rasterio import warp
+
+LOG = logging.getLogger(__name__)
 
 
 class VirtualCatalog(Catalog):
