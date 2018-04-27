@@ -1,0 +1,28 @@
+{
+  "name": "marblecutter-{{ ENV }}",
+  "description": "Dynamic processing of open aerial imagery",
+  "lambda": {
+    "memory": 1536
+  },
+  "regions": ["us-east-1"],
+  "hooks": {
+    "build": "make deps/deps.tgz && tar zxf deps/deps.tgz",
+    "clean": "rm -rf .pypath/ lib/ share/"
+  },
+  "proxy": {
+    "command": "python -S app.py",
+    "backoff": {
+      "attempts": 1
+    },
+    "timeout": 15
+  },
+  "environment": {
+    "CPL_TMPDIR": "/tmp",
+    "GDAL_CACHEMAX": "512",
+    "GDAL_DISABLE_READDIR_ON_OPEN": "TRUE",
+    "GDAL_HTTP_MERGE_CONSECUTIVE_RANGES": "YES",
+    "GDAL_HTTP_VERSION": "2",
+    "VSI_CACHE": "TRUE",
+    "VSI_CACHE_SIZE": "536870912"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "marblecutter-openaerialmap",
+  "description": "Dynamic processing of open aerial imagery",
+  "memory": 1536,
+  "timeout": 15,
+  "role": "arn:aws:iam::{{AWS_ACCOUNT_ID}}:role/tiler_lambda_function",
+  "environment": {
+    "SERVER_NAME": "{{AWS_SERVER_NAME}}",
+    "CPL_TMPDIR": "/tmp",
+    "GDAL_CACHEMAX": "512",
+    "GDAL_DISABLE_READDIR_ON_OPEN": "TRUE",
+    "VSI_CACHE": "TRUE",
+    "VSI_CACHE_SIZE": "536870912"
+  }
+}

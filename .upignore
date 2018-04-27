@@ -1,0 +1,13 @@
+!*.pyc
+*.hbs
+*.json
+.git/
+deps/
+functions/
+!lib/
+node_modules/
+!share/
+task/
+!.pypath/
+!.pypath/*/.libs/
+.pypath/*.py

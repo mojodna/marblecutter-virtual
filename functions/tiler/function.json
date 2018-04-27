@@ -1,0 +1,12 @@
+
+{
+  "description": "",
+  "runtime": "python",
+  "hooks": {
+    "build": "make -C ../.. deps/deps.tgz && tar zxf ../../deps/deps.tgz",
+    "clean": "rm -rf .pypath/ lib/ share/"
+  },
+  "environment": {
+    "PYTHONPATH": ".pypath/"
+  }
+}
