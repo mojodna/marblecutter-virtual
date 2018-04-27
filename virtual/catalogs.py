@@ -13,7 +13,7 @@ class VirtualCatalog(Catalog):
         self._uri = uri
         self._rgb = rgb
         self._nodata = nodata
-        self._linear_stretch = nodata
+        self._linear_stretch = linear_stretch
 
         with get_source(self._uri) as src:
             self._bounds = warp.transform_bounds(src.crs, WGS84_CRS, *src.bounds)
