@@ -35,4 +35,9 @@ class VirtualCatalog(Catalog):
         return self._uri
 
     def get_sources(self, bounds, resolution):
-        yield Source(self._uri, self._name, self._resolution, {}, {}, {"imagery": True})
+        recipes = {"imagery": True}
+
+        if self._nodata is not None:
+            recipes["nodata"] = self._nodata
+
+        yield Source(self._uri, self._name, self._resolution, {}, {}, recipes)
