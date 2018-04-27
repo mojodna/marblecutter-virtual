@@ -2,7 +2,6 @@
 from __future__ import absolute_import
 
 import logging
-import os
 
 from cachetools.func import lru_cache
 from flask import Markup, jsonify, render_template, request, url_for
@@ -19,10 +18,6 @@ LOG = logging.getLogger(__name__)
 
 IMAGE_TRANSFORMATION = Image()
 PNG_FORMAT = PNG()
-
-REMOTE_CATALOG_BASE_URL = os.getenv(
-    "REMOTE_CATALOG_BASE_URL", "https://api.openaerialmap.org"
-)
 
 
 @lru_cache()
