@@ -81,8 +81,8 @@ def bounds(prefix=None):
     return jsonify({"url": catalog.uri, "bounds": catalog.bounds})
 
 
-@app.route("/tiles/preview")
-@app.route("/<prefix>/tiles/preview")
+@app.route("/preview")
+@app.route("/<prefix>/preview")
 def preview(prefix=None):
     # initialize the catalog so this route will fail if the source doesn't exist
     make_catalog(request.args)
