@@ -4,11 +4,9 @@ services:
     build: .
     environment:
       - PYTHONPATH=.
-    env_file: .env
+    # env_file: .env
     volumes:
       - .:/opt/marblecutter/
-      - ../marblecutter/marblecutter:/usr/local/lib/python2.7/dist-packages/marblecutter
-      # - ../../mapbox/rasterio:/usr/local/src/rasterio
     ports:
       - "8000:8000"
     entrypoint: python

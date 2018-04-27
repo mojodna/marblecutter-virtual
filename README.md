@@ -26,6 +26,10 @@ JavaScript console (or Node.js REPL), run:
 encodeURIComponent("https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/SkySat_Freeport_s03_20170831T162740Z3.tif")
 ```
 
+If you need to access non-public files on S3, set your environment accordingly
+(see `sample.env`), either by creating `.env` and uncommenting `env_file` in
+`docker-compose.yml` or by adding appropriate `environment` entries.
+
 ## Endpoints
 
 ### `/bounds` - Source image bounds (in geographic coordinates)
