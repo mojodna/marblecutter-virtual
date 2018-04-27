@@ -37,7 +37,13 @@ class VirtualCatalog(Catalog):
     def get_sources(self, bounds, resolution):
         recipes = {"imagery": True}
 
+        if self._rgb is not None:
+            recipes["rgb_bands"] = map(int, self._rgb.split(","))
+
         if self._nodata is not None:
             recipes["nodata"] = self._nodata
+
+        if self._linear_stretch is not None:
+            recipes["linear_stretch"] = "per_band"
 
         yield Source(self._uri, self._name, self._resolution, {}, {}, recipes)
