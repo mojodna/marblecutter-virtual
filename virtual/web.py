@@ -5,7 +5,7 @@ import logging
 import os
 
 from cachetools.func import lru_cache
-from flask import jsonify, render_template, request, url_for
+from flask import Markup, jsonify, render_template, request, url_for
 from marblecutter import NoDataAvailable, tiling
 from marblecutter.formats.png import PNG
 from marblecutter.transformations import Image
@@ -64,9 +64,9 @@ def meta(prefix=None):
 
     with app.app_context():
         meta["tiles"] = [
-            "{}{{z}}/{{x}}/{{y}}.png?url={}".format(
+            "{}{{z}}/{{x}}/{{y}}.png?{}".format(
                 url_for("meta", prefix=make_prefix(), _external=True, _scheme=""),
-                urllib.quote_plus(catalog.uri),
+                urllib.urlencode(request.args),
             )
         ]
 
@@ -84,17 +84,20 @@ def bounds(prefix=None):
 @app.route("/tiles/preview")
 @app.route("/<prefix>/tiles/preview")
 def preview(prefix=None):
-    catalog = make_catalog(request.args)
+    # initialize the catalog so this route will fail if the source doesn't exist
+    make_catalog(request.args)
 
     with app.app_context():
         return render_template(
             "preview.html",
-            tilejson_url=url_for(
-                "meta",
-                prefix=make_prefix(),
-                _external=True,
-                _scheme="",
-                url=catalog.uri,
+            tilejson_url=Markup(
+                url_for(
+                    "meta",
+                    prefix=make_prefix(),
+                    _external=True,
+                    _scheme="",
+                    **request.args
+                )
             ),
         ), 200, {
             "Content-Type": "text/html"
