@@ -59,22 +59,26 @@ $ curl "http://localhost:8000/bounds?url=https%3A%2F%2Fs3-us-west-2.amazonaws.co
 * `linearStretch` - whether to stretch output to match min/max values present in
   the source. Useful for raw sensor output, e.g. earth observation (EO) data.
 
+`@2x` can be added to the filename (after the `{y}` coordinate) to request
+retina tiles. The map preview will detect support for retina displays and
+request tiles accordingly.
+
 #### Examples
 
 ```bash
-$ curl "http://localhost:8000/tiles/14/3851/6812.png?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif" | imgcat
+$ curl "http://localhost:8000/tiles/14/3851/6812@2x.png?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif" | imgcat
 ```
 
 ![RGB](docs/rgb.png)
 
 ```bash
-$ curl "http://localhost:8000/tiles/14/3851/6812.png?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif&rgb=1,1,1" | imgcat
+$ curl "http://localhost:8000/tiles/14/3851/6812@2x.png?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif&rgb=1,1,1" | imgcat
 ```
 
 ![greyscale](docs/greyscale.png)
 
 ```bash
-$ curl "http://localhost:8000/tiles/14/3851/6812.png?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif&rgb=1,1,1&linearStretch=true" | imgcat
+$ curl "http://localhost:8000/tiles/14/3851/6812@2x.png?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif&rgb=1,1,1&linearStretch=true" | imgcat
 ```
 
 ![greyscale stretched](docs/greyscale_stretched.png)
