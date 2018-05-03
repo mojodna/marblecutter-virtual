@@ -16,7 +16,7 @@ RUN \
 # Fetch and build nghttp2
 
 RUN mkdir /tmp/nghttp2 \
-  && curl -sfL https://github.com/nghttp2/nghttp2/releases/download/v1.26.0/nghttp2-1.26.0.tar.gz | tar zxf - -C /tmp/nghttp2 --strip-components=1 \
+  && curl -sfL https://github.com/nghttp2/nghttp2/releases/download/v1.31.1/nghttp2-1.31.1.tar.gz | tar zxf - -C /tmp/nghttp2 --strip-components=1 \
   && cd /tmp/nghttp2 \
   && ./configure --enable-lib-only --prefix=/var/task \
   && make -j $(nproc) install
@@ -24,7 +24,7 @@ RUN mkdir /tmp/nghttp2 \
 # Fetch and install libcurl
 
 RUN mkdir /tmp/curl \
-  && curl -sfL https://curl.haxx.se/download/curl-7.56.0.tar.gz | tar zxf - -C /tmp/curl --strip-components=1 \
+  && curl -sfL https://curl.haxx.se/download/curl-7.59.0.tar.gz | tar zxf - -C /tmp/curl --strip-components=1 \
   && cd /tmp/curl \
   && ./configure --prefix=/var/task --disable-manual --disable-cookies --with-nghttp2=/var/task \
   && make -j $(nproc) install
@@ -48,7 +48,7 @@ RUN \
 
 RUN \
   mkdir -p /tmp/gdal && \
-  curl -sfL https://github.com/OSGeo/gdal/archive/5c1e079.tar.gz | tar zxf - -C /tmp/gdal --strip-components=2
+  curl -sfL https://github.com/OSGeo/gdal/archive/v2.3.0beta1.tar.gz | tar zxf - -C /tmp/gdal --strip-components=2
 
 # Build + install GDAL
 
@@ -81,7 +81,7 @@ ENV PYTHONPATH /var/task/.pypath
 
 RUN \
   mkdir -p .pypath && \
-  pip install -U numpy Cython -t .pypath/ && \
+  pip install -U "numpy == 1.13.1" Cython -t .pypath/ && \
   pip install -r requirements-lambda.txt -t .pypath/
 
 RUN find . -name \*.so\* -exec strip {} \;
