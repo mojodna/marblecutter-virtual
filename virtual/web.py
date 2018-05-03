@@ -6,7 +6,7 @@ import logging
 from cachetools.func import lru_cache
 from flask import Markup, jsonify, render_template, request, url_for
 from marblecutter import NoDataAvailable, tiling
-from marblecutter.formats.optimal import OPTIMAL
+from marblecutter.formats.optimal import Optimal
 from marblecutter.transformations import Image
 from marblecutter.web import app
 from mercantile import Tile
@@ -17,7 +17,7 @@ from .catalogs import VirtualCatalog
 LOG = logging.getLogger(__name__)
 
 IMAGE_TRANSFORMATION = Image()
-IMAGE_FORMAT = OPTIMAL()
+IMAGE_FORMAT = Optimal()
 
 
 @lru_cache()
