@@ -6,7 +6,7 @@ import logging
 from cachetools.func import lru_cache
 from flask import Markup, jsonify, render_template, request, url_for
 from marblecutter import NoDataAvailable, tiling
-from marblecutter.formats.png import PNG
+from marblecutter.formats.optimal import OPTIMAL
 from marblecutter.transformations import Image
 from marblecutter.web import app
 from mercantile import Tile
@@ -17,7 +17,7 @@ from .catalogs import VirtualCatalog
 LOG = logging.getLogger(__name__)
 
 IMAGE_TRANSFORMATION = Image()
-PNG_FORMAT = PNG()
+IMAGE_FORMAT = OPTIMAL()
 
 
 @lru_cache()
@@ -59,7 +59,7 @@ def meta(prefix=None):
 
     with app.app_context():
         meta["tiles"] = [
-            "{}{{z}}/{{x}}/{{y}}.png?{}".format(
+            "{}{{z}}/{{x}}/{{y}}?{}".format(
                 url_for("meta", prefix=make_prefix(), _external=True, _scheme=""),
                 urllib.urlencode(request.args),
             )
@@ -99,10 +99,10 @@ def preview(prefix=None):
         }
 
 
-@app.route("/tiles/<int:z>/<int:x>/<int:y>.png")
-@app.route("/tiles/<int:z>/<int:x>/<int:y>@<int:scale>x.png")
-@app.route("/<prefix>/tiles/<image_id>/<int:z>/<int:x>/<int:y>.png")
-@app.route("/<prefix>/tiles/<int:z>/<int:x>/<int:y>.png")
+@app.route("/tiles/<int:z>/<int:x>/<int:y>")
+@app.route("/tiles/<int:z>/<int:x>/<int:y>@<int:scale>x")
+@app.route("/<prefix>/tiles/<image_id>/<int:z>/<int:x>/<int:y>")
+@app.route("/<prefix>/tiles/<int:z>/<int:x>/<int:y>")
 def render_png(z, x, y, scale=1, prefix=None):
     catalog = make_catalog(request.args)
     tile = Tile(x, y, z)
@@ -110,7 +110,7 @@ def render_png(z, x, y, scale=1, prefix=None):
     headers, data = tiling.render_tile(
         tile,
         catalog,
-        format=PNG_FORMAT,
+        format=IMAGE_FORMAT,
         transformation=IMAGE_TRANSFORMATION,
         scale=scale,
     )

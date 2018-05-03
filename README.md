@@ -53,7 +53,7 @@ $ curl "http://localhost:8000/bounds?url=https%3A%2F%2Fs3-us-west-2.amazonaws.co
 }
 ```
 
-### `/tiles/{z}/{x}/{y}.png` - Tiles
+### `/tiles/{z}/{x}/{y}` - Tiles
 
 #### Parameters
 
@@ -67,22 +67,25 @@ $ curl "http://localhost:8000/bounds?url=https%3A%2F%2Fs3-us-west-2.amazonaws.co
 retina tiles. The map preview will detect support for retina displays and
 request tiles accordingly.
 
+PNGs or JPEGs will be rendered depending on the presence of NODATA values in the
+source image (surfaced as transparency in the output).
+
 #### Examples
 
 ```bash
-$ curl "http://localhost:8000/tiles/14/3851/6812@2x.png?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif" | imgcat
+$ curl "http://localhost:8000/tiles/14/3851/6812@2x?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif" | imgcat
 ```
 
 ![RGB](docs/rgb.png)
 
 ```bash
-$ curl "http://localhost:8000/tiles/14/3851/6812@2x.png?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif&rgb=1,1,1" | imgcat
+$ curl "http://localhost:8000/tiles/14/3851/6812@2x?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif&rgb=1,1,1" | imgcat
 ```
 
 ![greyscale](docs/greyscale.png)
 
 ```bash
-$ curl "http://localhost:8000/tiles/14/3851/6812@2x.png?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif&rgb=1,1,1&linearStretch=true" | imgcat
+$ curl "http://localhost:8000/tiles/14/3851/6812@2x?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif&rgb=1,1,1&linearStretch=true" | imgcat
 ```
 
 ![greyscale stretched](docs/greyscale_stretched.png)
@@ -114,7 +117,7 @@ $ curl "http://localhost:8000/tiles?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com
   "name": "Untitled",
   "tilejson": "2.1.0",
   "tiles": [
-    "//localhost:8000/tiles/{z}/{x}/{y}.png?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif"
+    "//localhost:8000/tiles/{z}/{x}/{y}?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif"
   ]
 }
 ```
