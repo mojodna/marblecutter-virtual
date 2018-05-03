@@ -5,7 +5,7 @@ import logging
 import os
 import signal
 
-from openaerialmap.web import app
+from virtual.web import app
 
 logging.basicConfig(level=logging.INFO)
 LOG = logging.getLogger(__name__)
