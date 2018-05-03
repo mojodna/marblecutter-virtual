@@ -57,6 +57,8 @@
 .pypath/click/termui.pyc
 .pypath/click/types.pyc
 .pypath/click/utils.pyc
+.pypath/concurrent/*.pyc
+.pypath/concurrent/futures/*.pyc
 .pypath/cycler.pyc
 .pypath/dateutil/*
 .pypath/enum/__init__.pyc
@@ -110,6 +112,7 @@
 .pypath/marblecutter/*
 .pypath/markupsafe/__init__.pyc
 .pypath/markupsafe/_compat.pyc
+.pypath/markupsafe/_native.pyc
 .pypath/markupsafe/_speedups.so
 .pypath/matplotlib/.libs/libpng16-*
 .pypath/matplotlib/.libs/libz-*
@@ -360,6 +363,10 @@
 .pypath/rasterio/vrt.pyc
 .pypath/rasterio/warp.pyc
 .pypath/rasterio/windows.pyc
+.pypath/rio_pansharpen/*.pyc
+.pypath/rio_tiler/*.pyc
+.pypath/rio_toa/*.pyc
+.pypath/riomucho/*.pyc
 .pypath/requests/*
 .pypath/scipy/__config__.pyc
 .pypath/scipy/__init__.pyc
