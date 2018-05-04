@@ -72,6 +72,6 @@ class VirtualCatalog(Catalog):
             name=self._name,
             resolution=self._resolution,
             band_info={},
-            meta={},
+            meta=self._meta,
             recipes=recipes,
         )
