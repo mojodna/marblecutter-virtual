@@ -5,7 +5,7 @@ import logging
 
 from cachetools.func import lru_cache
 from flask import Markup, jsonify, render_template, request, url_for
-from marblecutter import NoDataAvailable, tiling
+from marblecutter import NoCatalogAvailable, tiling
 from marblecutter.formats.optimal import Optimal
 from marblecutter.transformations import Image
 from marblecutter.web import app
@@ -31,8 +31,9 @@ def make_catalog(args):
         return VirtualCatalog(
             source, rgb=rgb, nodata=nodata, linear_stretch=linear_stretch
         )
-    except Exception:
-        raise NoDataAvailable()
+    except Exception as e:
+        LOG.warn(e.message)
+        raise NoCatalogAvailable()
 
 
 def make_prefix():
