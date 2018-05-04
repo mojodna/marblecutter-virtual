@@ -8,10 +8,7 @@ project.json: project.json.hbs node_modules/.bin/interp
 	interp < $< > $@
 
 deploy-up: up.json deps/deps.tgz
-	up
-
-deploy-production: up.json deps/deps.tgz
-	up production
+	up $(ENV)
 
 # always build this in case the *environment* changes
 .PHONY: up.json
