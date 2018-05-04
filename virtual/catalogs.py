@@ -27,6 +27,9 @@ class VirtualCatalog(Catalog):
             )
             approximate_zoom = get_zoom(max(self._resolution), op=math.ceil)
 
+            global_min = src.get_tag_item("TIFFTAG_MINSAMPLEVALUE")
+            global_max = src.get_tag_item("TIFFTAG_MAXSAMPLEVALUE")
+
             for band in xrange(0, src.count):
                 self._meta["values"] = self._meta.get("values", {})
                 self._meta["values"][band] = {}
@@ -36,9 +39,13 @@ class VirtualCatalog(Catalog):
 
                 if min_val is not None:
                     self._meta["values"][band]["min"] = float(min_val)
+                elif global_min is not None:
+                    self._meta["values"][band]["min"] = float(global_min)
 
                 if max_val is not None:
                     self._meta["values"][band]["max"] = float(max_val)
+                elif global_max is not None:
+                    self._meta["values"][band]["max"] = float(global_max)
 
                 if mean_val is not None:
                     self._meta["values"][band]["mean"] = float(mean_val)
