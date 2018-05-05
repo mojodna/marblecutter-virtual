@@ -5,6 +5,11 @@
     "memory": 1536
   },
   "regions": ["us-east-1"],
+  "headers": {
+    "/*": {
+      "Cache-Control": "max-age=31536000"
+    }
+  },
   "hooks": {
     "build": "make deps/deps.tgz && tar zxf deps/deps.tgz",
     "clean": "rm -rf .pypath/ lib/ lib64/ share/"
@@ -27,12 +32,7 @@
   },
   "stages": {
     "production": {
-      "domain": "{{ PRODUCTION_DOMAIN }}",
-      "headers": {
-        "/*": {
-          "Cache-Control": "max-age=31536000"
-        }
-      }
+      "domain": "{{ PRODUCTION_DOMAIN }}"
     }
   }
 }
