@@ -592,4 +592,6 @@ lib/libcurl.so*
 lib/libgdal.so*
 lib/libnghttp2.so*
 lib/libproj.so*
+lib64/libjpeg.so.*
+lib64/libturbojpeg.so.*
 share/gdal/*
