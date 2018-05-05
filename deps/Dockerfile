@@ -9,6 +9,8 @@ ARG PROJ_VERSION=4.9.3
 
 # add gdal-config and curl to PATH for rasterio + libcurl usage
 ENV PATH /var/task/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV LD_LIBRARY_PATH /lib64:/usr/lib64:/var/runtime:/var/runtime/lib:/var/task:/var/task/lib:/var/task/lib64
+ENV LIBRARY_PATH /lib64:/usr/lib64:/var/runtime:/var/runtime/lib:/var/task:/var/task/lib:/var/task/lib64
 
 # Install deps
 
@@ -16,7 +18,8 @@ RUN \
   rpm --rebuilddb && \
   yum install -y \
     automake16 \
-    libpng-devel
+    libpng-devel \
+    nasm
 
 # Fetch and build nghttp2
 
@@ -51,11 +54,6 @@ RUN \
 
 # Build and install libjpeg-turbo
 
-RUN \
-  rpm --rebuilddb && \
-  yum install -y \
-    nasm
-
 RUN mkdir -p /tmp/libjpeg-turbo \
   && curl -sfL https://github.com/libjpeg-turbo/libjpeg-turbo/archive/${LIBJPEG_TURBO_VERSION}.tar.gz | tar zxf - -C /tmp/libjpeg-turbo --strip-components=1 \
   && cd /tmp/libjpeg-turbo \
@@ -71,9 +69,6 @@ RUN \
 # Build + install GDAL
 
 WORKDIR /tmp/gdal
-
-ENV LD_LIBRARY_PATH /var/task/lib64
-ENV LIBRARY_PATH /var/task/lib64
 
 RUN \
   ./configure \
