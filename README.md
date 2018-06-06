@@ -145,3 +145,10 @@ or
 ```bash
 make deploy-apex
 ```
+
+NOTE: when setting up a Cloudfront distribution in front of a regional API
+Gateway endpoint, ensure that `Origin Protocol Policy` is `HTTPS Only` (API
+Gateway doesn't support HTTP) and add an `Origin Custom Header`:
+`X-Forwarded-Host` should be the hostname used for your Cloudfront distribution
+(otherwise auto-generated tile URLs will use the API Gateway domain; CF sends a
+`Host` header corresponding to the origin, not the CDN endpoint).
