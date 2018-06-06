@@ -152,3 +152,6 @@ Gateway doesn't support HTTP) and add an `Origin Custom Header`:
 `X-Forwarded-Host` should be the hostname used for your Cloudfront distribution
 (otherwise auto-generated tile URLs will use the API Gateway domain; CF sends a
 `Host` header corresponding to the origin, not the CDN endpoint).
+
+NOTE: reading `s3://` URLs from Lambda requires that the IAM role created by Up
+be granted S3 access (not to specific buckets, just generally).
