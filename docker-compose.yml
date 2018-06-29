@@ -4,7 +4,6 @@ services:
     build: .
     environment:
       - PYTHONPATH=.
-      - GDAL_DATA=/usr/share/gdal
     volumes:
       - .:/opt/marblecutter/
     ports:
