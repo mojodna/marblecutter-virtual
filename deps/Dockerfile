@@ -1,16 +1,17 @@
 FROM lambci/lambda:build-python2.7
 
 ARG http_proxy
-ARG CURL_VERSION=7.59.0
-ARG GDAL_VERSION=2.3.0
+ARG CURL_VERSION=7.60.0
+ARG GDAL_VERSION=2.3.1
 ARG LIBJPEG_TURBO_VERSION=1.5.90
-ARG NGHTTP2_VERSION=1.31.1
+ARG NGHTTP2_VERSION=1.32.0
 ARG PROJ_VERSION=4.9.3
 
 # add gdal-config and curl to PATH for rasterio + libcurl usage
 ENV PATH /var/task/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ENV LD_LIBRARY_PATH /lib64:/usr/lib64:/var/runtime:/var/runtime/lib:/var/task:/var/task/lib:/var/task/lib64
 ENV LIBRARY_PATH /lib64:/usr/lib64:/var/runtime:/var/runtime/lib:/var/task:/var/task/lib:/var/task/lib64
+ENV GDAL_DATA=/var/task/share/gdal
 
 # Install deps
 
