@@ -1,4 +1,5 @@
 cachetools ~= 2.0.0
 # marblecutter[color_ramp,postgis,web] ~= 0.3.1
-https://github.com/mojodna/marblecutter/archive/5348687.tar.gz#egg=marblecutter[web]
-rasterio[s3] == 1.0b1 --no-binary rasterio
+https://github.com/mojodna/marblecutter/archive/1570306.tar.gz#egg=marblecutter[web]
+# https://github.com/mapbox/rasterio/archive/f517575.tar.gz#egg=rasterio[s3]
+rasterio[s3] >= 1.0rc2 --no-binary rasterio
