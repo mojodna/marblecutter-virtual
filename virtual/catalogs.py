@@ -19,8 +19,8 @@ class VirtualCatalog(Catalog):
         self._nodata = nodata
         self._linear_stretch = linear_stretch
         self._meta = {}
-        self.band1 = int(band1)
-        self.band2 = int(band2)
+        self._band1 = int(band1)
+        self._band2 = int(band2)
 
         LOG.info("band1:{}".format(band1))
         LOG.info("band2:{}".format(band2))
@@ -78,6 +78,10 @@ class VirtualCatalog(Catalog):
 
         if self._linear_stretch is not None:
             recipes["linear_stretch"] = "per_band"
+
+        if (self._band1 is not None) and (self._band2 is not None):
+            recipes['nd_bands'] = (self._band1, self._band2)
+            LOG.info("nd_bands: {}".format(recipes['nd_bands']))
 
         yield Source(
             url=self._uri,

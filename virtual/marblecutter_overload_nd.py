@@ -1,13 +1,11 @@
 # coding=utf-8
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
 
 import logging
 
 import mercantile
-from affine import Affine
 from rasterio.crs import CRS
 
-from marblecutter import Bounds, render
 
 LOG = logging.getLogger(__name__)
 TILE_SHAPE = (256, 256)
@@ -16,24 +14,12 @@ WGS84_CRS = CRS.from_epsg(4326)
 
 
 # coding=utf-8
-from __future__ import absolute_import, division, print_function
 
-import logging
-import math
 import unicodedata
 
-from haversine import haversine
 import numpy as np
-import rasterio
-from rasterio import transform, warp, windows
-from rasterio._err import CPLE_OutOfMemoryError
-from rasterio.crs import CRS
-from rasterio.enums import MaskFlags
 from rasterio.transform import Affine
-from rasterio.vrt import WarpedVRT
-from rasterio.warp import Resampling
-
-from marblecutter import mosaic
+from virtual import mosaic
 from marblecutter.stats import Timer
 from marblecutter.utils import Bounds, PixelCollection
 from marblecutter import get_resolution_in_meters, NoDataAvailable
@@ -59,17 +45,28 @@ def render_nd_tile(tile, catalog, transformation=None, format=None, scale=1, dat
 
 
 def performBandMath(pixels, catalog):
-
+    LOG.info("bandmath")
     if (catalog.band1 is not None) and (catalog.band2 is not None):
-
+        LOG.info("Perform Bandmath")
         band1 = int(catalog.band1) if isinstance(catalog.band1, str) else catalog.band1
         band2 = int(catalog.band2) if isinstance(catalog.band2, str) else catalog.band2
 
-        bandTile1 = pixels.data[band1]
-        bandTile2 = pixels.data[band2]
+        LOG.info("pixels.data shape = {}".format(pixels.data.shape))
+        data = np.asarray(pixels.data)
+        LOG.info("data shape = {}".format(pixels.data.shape))
+        LOG.info("pixels = {}".format(pixels))
+
+
+        bandTile1 = data[:, :, band1]
+        bandTile2 = data[:, :, band2]
+
+        newBand = (bandTile2.astype(float) - bandTile1.astype(float)) / (bandTile2.astype(float) + bandTile1.astype(float))
+        newData = data
+        for idx in range(np.shape(data)[2]):
+            newData[:,:,idx] = newBand
 
         np.seterr(divide='ignore', invalid='ignore')
-        new_pixel_collection =  PixelCollection((bandTile2.astype(float) - bandTile1.astype(float)) / (bandTile2.astype(float) + bandTile1.astype(float)),
+        new_pixel_collection =  PixelCollection(newData,
                          pixels.bounds,
                          pixels.band)
 
@@ -77,6 +74,7 @@ def performBandMath(pixels, catalog):
         ##TODO introduce new error
         raise NoDataAvailable()
 
+    LOG.info("return Bandmath")
     return new_pixel_collection
 
 def render_nd(
@@ -87,9 +85,7 @@ def render_nd(
     data_band_count,
     catalog=None,
     sources=None,
-    transformation=None,
-    nd_calc=True
-
+    transformation=None
 ):
     """Render data intersecting bounds into shape using an optional
     transformation. And perform normative diference using bands specified in catalog"""
@@ -133,9 +129,6 @@ def render_nd(
             pixels = transformation.postprocess(pixels, data_format, offsets)
 
         stats.append(("Post-process", t.elapsed))
-
-    if nd_calc:
-        pixels = performBandMath(pixels, catalog)
 
     with Timer() as t:
         (content_type, formatted) = format(pixels, data_format)

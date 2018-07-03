@@ -26,7 +26,7 @@ LOG = logging.getLogger(__name__)
 
 IMAGE_TRANSFORMATION = Image()
 IMAGE_FORMAT = Optimal()
-IMAGE_FORMAT_ND = Optimalnd()
+IMAGE_FORMAT_ND = Optimal()
 
 
 @lru_cache()
