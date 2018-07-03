@@ -90,6 +90,37 @@ $ curl "http://localhost:8000/tiles/14/3851/6812@2x?url=https%3A%2F%2Fs3-us-west
 
 ![greyscale stretched](docs/greyscale_stretched.png)
 
+
+### `/ndtiles/{z}/{x}/{y}` - Tiles
+
+Calculated normalized diffference index between two bands. The most common example is NDVI
+
+tile = (Band2 - Band1)/(Band2 _ Band 1)
+
+#### Parameters
+
+* `url` - a URL to a valid COG. Required.
+* `nodata` - a custom NODATA value.
+* `band1` - Band1 for Normalized Difference
+* `band2` - Band2 for Normalized Difference
+
+`@2x` can be added to the filename (after the `{y}` coordinate) to request
+retina tiles. The map preview will detect support for retina displays and
+request tiles accordingly.
+
+PNGs or JPEGs will be rendered depending on the presence of NODATA values in the
+source image (surfaced as transparency in the output).
+
+#### Examples
+
+```bash
+$ curl "http://localhost:8000/tiles/14/3851/6812@2x?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif" | imgcat
+```
+
+![RGB](docs/nd_test.jpeg)
+
+
+
 ### `/tiles` - TileJSON
 
 #### Parameters
