@@ -19,8 +19,11 @@ class VirtualCatalog(Catalog):
         self._nodata = nodata
         self._linear_stretch = linear_stretch
         self._meta = {}
-        self.band1 = band1
-        self.band2 = band2
+        self.band1 = int(band1)
+        self.band2 = int(band2)
+
+        LOG.info("band1:{}".format(band1))
+        LOG.info("band2:{}".format(band2))
 
         with get_source(self._uri) as src:
             self._bounds = warp.transform_bounds(src.crs, WGS84_CRS, *src.bounds)

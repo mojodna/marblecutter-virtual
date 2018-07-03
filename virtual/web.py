@@ -12,13 +12,21 @@ from marblecutter.web import app
 from . import marblecutter_overload_nd as marblecutter_nd
 from mercantile import Tile
 import urllib
+from .nd_formats import Optimalnd
 
 from .catalogs import VirtualCatalog
+
+
+
+
+
+
 
 LOG = logging.getLogger(__name__)
 
 IMAGE_TRANSFORMATION = Image()
 IMAGE_FORMAT = Optimal()
+IMAGE_FORMAT_ND = Optimalnd()
 
 
 @lru_cache()
@@ -27,10 +35,12 @@ def make_catalog(args):
     rgb = args.get("rgb")
     nodata = args.get("nodata")
     linear_stretch = args.get("linearStretch")
+    band1 = args.get('band1')
+    band2 = args.get('band2')
 
     try:
         return VirtualCatalog(
-            source, rgb=rgb, nodata=nodata, linear_stretch=linear_stretch
+            source, rgb=rgb, nodata=nodata, linear_stretch=linear_stretch, band1=band1, band2=band2
         )
     except Exception as e:
         LOG.warn(e.message)
@@ -129,11 +139,10 @@ def render_png(z, x, y, scale=1, prefix=None):
 def render_nd_png(z, x, y, scale=1, prefix=None):
     catalog = make_catalog(request.args)
     tile = Tile(x, y, z)
-
-    headers, data = marblecutter_nd.render_tile(
+    headers, data = marblecutter_nd.render_nd_tile(
         tile,
         catalog,
-        format=IMAGE_FORMAT,
+        format=IMAGE_FORMAT_ND,
         transformation=IMAGE_TRANSFORMATION,
         scale=scale,
     )
