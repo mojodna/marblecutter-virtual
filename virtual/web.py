@@ -9,6 +9,7 @@ from marblecutter import NoCatalogAvailable, tiling
 from marblecutter.formats.optimal import Optimal
 from marblecutter.transformations import Image
 from marblecutter.web import app
+from . import marblecutter_overload_nd as marblecutter_nd
 from mercantile import Tile
 import urllib
 
@@ -109,6 +110,27 @@ def render_png(z, x, y, scale=1, prefix=None):
     tile = Tile(x, y, z)
 
     headers, data = tiling.render_tile(
+        tile,
+        catalog,
+        format=IMAGE_FORMAT,
+        transformation=IMAGE_TRANSFORMATION,
+        scale=scale,
+    )
+
+    headers.update(catalog.headers)
+
+    return data, 200, headers
+
+
+@app.route("/ndtiles/<int:z>/<int:x>/<int:y>")
+@app.route("/ndtiles/<int:z>/<int:x>/<int:y>@<int:scale>x")
+@app.route("/<prefix>/ndtiles/<image_id>/<int:z>/<int:x>/<int:y>")
+@app.route("/<prefix>/ndtiles/<int:z>/<int:x>/<int:y>")
+def render_nd_png(z, x, y, scale=1, prefix=None):
+    catalog = make_catalog(request.args)
+    tile = Tile(x, y, z)
+
+    headers, data = marblecutter_nd.render_tile(
         tile,
         catalog,
         format=IMAGE_FORMAT,
