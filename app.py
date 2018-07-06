@@ -4,6 +4,7 @@ from __future__ import division, print_function
 import logging
 import os
 import signal
+import sys
 
 from virtual.web import app
 
@@ -13,7 +14,7 @@ LOG = logging.getLogger(__name__)
 
 def handler(signum, frame):
     LOG.warning("Request timed out; crashing in place of cleanup.")
-    exit(1)
+    sys.exit(1)
 
 
 # Register the signal function handler
