@@ -62,6 +62,10 @@ $ curl "http://localhost:8000/bounds?url=https%3A%2F%2Fs3-us-west-2.amazonaws.co
 * `nodata` - a custom NODATA value.
 * `linearStretch` - whether to stretch output to match min/max values present in
   the source. Useful for raw sensor output, e.g. earth observation (EO) data.
+* `resample` - Specify a custom resampling method (e.g. for discrete values).
+  Valid values (from `rasterio.enums.Resampling`): `nearest`, `bilinear`,
+  `cubic`, `cubic_spline`, `lanczos`, `average`, `mode`, `gauss`, `max`, `min`,
+  `med`, `q1`, `q3`. Defaults to `bilinear`.
 
 `@2x` can be added to the filename (after the `{y}` coordinate) to request
 retina tiles. The map preview will detect support for retina displays and

@@ -7,17 +7,24 @@ from marblecutter import Bounds, get_resolution_in_meters, get_source, get_zoom
 from marblecutter.catalogs import WGS84_CRS, Catalog
 from marblecutter.utils import Source
 from rasterio import warp
+from rasterio.enums import Resampling
 
 LOG = logging.getLogger(__name__)
 
 
 class VirtualCatalog(Catalog):
 
-    def __init__(self, uri, rgb=None, nodata=None, linear_stretch=None):
+    def __init__(self, uri, rgb=None, nodata=None, linear_stretch=None, resample=None):
         self._uri = uri
         self._rgb = rgb
         self._nodata = nodata
         self._linear_stretch = linear_stretch
+        try:
+            # test whether provided resampling method is valid
+            Resampling[resample]
+            self._resample = resample
+        except KeyError:
+            self._resample = None
         self._meta = {}
 
         with get_source(self._uri) as src:
@@ -73,6 +80,9 @@ class VirtualCatalog(Catalog):
 
         if self._linear_stretch is not None:
             recipes["linear_stretch"] = "per_band"
+
+        if self._resample is not None:
+            recipes["resample"] = self._resample
 
         yield Source(
             url=self._uri,

@@ -22,14 +22,13 @@ IMAGE_FORMAT = Optimal()
 
 @lru_cache()
 def make_catalog(args):
-    source = args["url"]
-    rgb = args.get("rgb")
-    nodata = args.get("nodata")
-    linear_stretch = args.get("linearStretch")
-
     try:
         return VirtualCatalog(
-            source, rgb=rgb, nodata=nodata, linear_stretch=linear_stretch
+            args["url"],
+            rgb=args.get("rgb"),
+            nodata=args.get("nodata"),
+            linear_stretch=args.get("linearStretch"),
+            resample=args.get("resample"),
         )
     except Exception as e:
         LOG.warn(e.message)
