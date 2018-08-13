@@ -4,7 +4,7 @@
   "lambda": {
     "memory": 1536
   },
-  "regions": ["us-east-1"],
+  "regions": ["{{ AWS_REGION }}"],
   "headers": {
     "/*": {
       "Cache-Control": "max-age=31536000"
@@ -31,10 +31,5 @@
     "GDAL_HTTP_VERSION": "2",
     "VSI_CACHE": "TRUE",
     "VSI_CACHE_SIZE": "536870912"
-  },
-  "stages": {
-    "production": {
-      "domain": "{{ PRODUCTION_DOMAIN }}"
-    }
   }
 }
