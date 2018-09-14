@@ -101,8 +101,8 @@ def preview(prefix=None):
 
 @app.route("/tiles/<int:z>/<int:x>/<int:y>")
 @app.route("/tiles/<int:z>/<int:x>/<int:y>@<int:scale>x")
-@app.route("/<prefix>/tiles/<image_id>/<int:z>/<int:x>/<int:y>")
 @app.route("/<prefix>/tiles/<int:z>/<int:x>/<int:y>")
+@app.route("/<prefix>/tiles/<int:z>/<int:x>/<int:y>@<int:scale>x")
 def render_png(z, x, y, scale=1, prefix=None):
     catalog = make_catalog(request.args)
     tile = Tile(x, y, z)
