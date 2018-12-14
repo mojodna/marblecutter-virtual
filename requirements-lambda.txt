@@ -1,6 +1,6 @@
 -r requirements.txt
 
-flask == 0.12.2
+flask ~> 0.12.3
 flask-cors == 3.0.3
 haversine == 0.4.5
 mercantile >= 0.10.0
