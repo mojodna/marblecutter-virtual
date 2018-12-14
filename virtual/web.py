@@ -10,7 +10,15 @@ from marblecutter.formats.optimal import Optimal
 from marblecutter.transformations import Image
 from marblecutter.web import app
 from mercantile import Tile
-import urllib
+
+try:
+    from urllib.parse import urlparse, urlencode
+    from urllib.request import urlopen, Request
+    from urllib.error import HTTPError
+except ImportError:
+    from urlparse import urlparse
+    from urllib import urlencode
+    from urllib2 import urlopen, Request, HTTPError
 
 from .catalogs import VirtualCatalog
 
@@ -61,7 +69,7 @@ def meta(prefix=None):
         meta["tiles"] = [
             "{}{{z}}/{{x}}/{{y}}?{}".format(
                 url_for("meta", prefix=make_prefix(), _external=True, _scheme=""),
-                urllib.urlencode(request.args),
+                urlencode(request.args),
             )
         ]
 
