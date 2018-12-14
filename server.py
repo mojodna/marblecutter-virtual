@@ -7,6 +7,7 @@ import os
 from virtual.web import app
 
 logging.basicConfig(level=logging.INFO)
+logging.getLogger("rasterio._base").setLevel(logging.WARNING)
 LOG = logging.getLogger(__name__)
 
 
