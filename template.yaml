@@ -1,0 +1,116 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  marblecutter-virtual
+
+  SAM Template for marblecutter-virtual
+
+Parameters:
+  DomainName:
+    Type: String
+    Description: Endpoint name
+  AcmCertificateArn:
+    Type: String
+    Description: ACM Certificate ARN (must have been created in us-east-1)
+    Default: ""
+
+Globals:
+  Api:
+    # API Gateway regional endpoints
+    EndpointConfiguration: REGIONAL
+
+    # enable CORS; to make more specific, change the origin wildcard
+    # to a particular domain name, e.g. "'www.example.com'"
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
+
+    # Send/receive binary data through the APIs
+    BinaryMediaTypes:
+      # This is equivalent to */* when deployed
+      - "*~1*"
+
+Resources:
+  # Lambda function
+  MarblecutterVirtualFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Policies: AmazonS3ReadOnlyAccess
+      Handler: virtual.lambda.handle
+      Runtime: python3.6
+      Environment:
+        Variables:
+          AWS_REQUEST_PAYER: requester
+          CPL_TMPDIR: /tmp
+          GDAL_CACHEMAX: 75%
+          GDAL_DISABLE_READDIR_ON_OPEN: TRUE
+          GDAL_HTTP_MERGE_CONSECUTIVE_RANGES: YES
+          # requires nghttp2 support
+          # GDAL_HTTP_VERSION: 2
+          VSI_CACHE: TRUE
+          VSI_CACHE_SIZE: 500000000
+          API_GATEWAY_BASE_PATH: Prod
+      Timeout: 15
+      MemorySize: 1536
+      Events:
+        # API Gateway routes
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            Path: /
+            Method: ANY
+        ProxyApiGreedy:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+
+  # CloudFront Distribution
+  CFDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases:
+            - !Ref DomainName
+        Enabled: true
+        Comment: marblecutter-virtual
+        IPV6Enabled: true
+        Origins:
+          -
+            Id: MarblecutterVirtualApi
+            DomainName: !Sub "${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com"
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+            OriginCustomHeaders:
+                - HeaderName: X-Forwarded-Host
+                  HeaderValue: !Ref DomainName
+            OriginPath: !Sub "/${ServerlessRestApi.Stage}"
+        DefaultCacheBehavior:
+          TargetOriginId: MarblecutterVirtualApi
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: allow-all
+        # ViewerCertificate:
+        #   AcmCertificateArn: !Ref AcmCertificateArn
+        #   SslSupportMethod: sni-only
+
+Outputs:
+  MarblecutterVirtualApi:
+    Description: "API Gateway endpoint URL for for marblecutter-virtual"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/${ServerlessRestApi.Stage}"
+
+  MarblecutterVirtualFunction:
+    Description: "marblecutter-virtual Lambda Function ARN"
+    Value: !GetAtt MarblecutterVirtualFunction.Arn
+
+  MarblecutterVirtualFunctionIamRole:
+    Description: "Implicit IAM Role created for marblecutter-virtual"
+    Value: !GetAtt MarblecutterVirtualFunctionRole.Arn
+
+  CFDistribution: 
+    Description: Cloudfront Distribution Domain Name
+    Value: !GetAtt CFDistribution.DomainName

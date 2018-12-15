@@ -1,4 +1,18 @@
 PATH := node_modules/.bin:$(PATH)
+STACK_NAME ?= "marblecutter-virtual"
+
+deploy: packaged.yaml
+	sam deploy \
+		--template-file $< \
+		--stack-name $(STACK_NAME) \
+		--capabilities CAPABILITY_IAM \
+		--parameter-overrides DomainName=$(DOMAIN_NAME)
+
+packaged.yaml: .aws-sam/build/template.yaml
+	sam package --s3-bucket $(S3_BUCKET) --output-template-file $@
+
+.aws-sam/build/template.yaml: template.yaml requirements.txt virtual/*.py
+	sam build --use-container
 
 deploy-apex: project.json deps/deps.tgz
 	apex deploy -l debug -E environment.json

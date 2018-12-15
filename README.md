@@ -136,26 +136,51 @@ See tile parameters.
 
 `http://localhost:8000/preview?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif`
 
-## Deploying to AWS Lambda
+## Deploying to AWS
 
-tk
+marblecutter-virtual is deployed using the [AWS Serverless Application Model
+(SAM)](https://github.com/awslabs/serverless-application-model).
+
+Once you have the [SAM CLI](https://github.com/awslabs/aws-sam-cli) installed, you can build with:
 
 ```bash
-make deploy-up
+sam build --use-container
 ```
 
-or
+You can then test it locally as though it's running on Lambda + API Gateway
+(it will be _really_ slow, as function invocations are not re-used in the
+same way as on Lambda proper):
 
 ```bash
-make deploy-apex
+sam local start-api
+```
+
+To deploy, first package the application:
+
+```bash
+sam package --s3-bucket <staging-bucket> --output-template-file packaged.yaml
+```
+
+Once staged, it can be deployed:
+
+```bash
+sam deploy \
+  --template-file packaged.yaml \
+  --stack-name marblecutter-virtual \
+  --capabilities CAPABILITY_IAM \
+  --parameter-overrides DomainName=<hostname>
+```
+
+These commands are wrapped as a `deploy` target, so this can be done more
+simply with:
+
+```bash
+S3_BUCKET=<staging-bucket> DOMAIN_NAME=<hostname> make deploy
 ```
 
 NOTE: when setting up a Cloudfront distribution in front of a regional API
-Gateway endpoint, ensure that `Origin Protocol Policy` is `HTTPS Only` (API
-Gateway doesn't support HTTP) and add an `Origin Custom Header`:
-`X-Forwarded-Host` should be the hostname used for your Cloudfront distribution
-(otherwise auto-generated tile URLs will use the API Gateway domain; CF sends a
-`Host` header corresponding to the origin, not the CDN endpoint).
-
-NOTE: reading `s3://` URLs from Lambda requires that the IAM role created by Up
-be granted S3 access (not to specific buckets, just generally).
+Gateway endpoint (which is what this process does), an `Origin Custom Header`
+will be added: `X-Forwarded-Host` should be the hostname used for your
+Cloudfront distribution (otherwise auto-generated tile URLs will use the API
+Gateway domain; CF sends a `Host` header corresponding to the origin, not the
+CDN endpoint).

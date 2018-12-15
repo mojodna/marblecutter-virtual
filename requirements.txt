@@ -3,3 +3,4 @@ cachetools ~= 2.0.0
 https://github.com/mojodna/marblecutter/archive/ee1ce6f.tar.gz#egg=marblecutter[web]
 rasterio[s3] ~= 1.0
 numpy
+serverless-wsgi
