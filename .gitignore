@@ -15,3 +15,7 @@ staging.env
 production.env
 out.zip
 package-lock.json
+.venv/
+.vscode/
+.aws-sam/
+packaged.yaml

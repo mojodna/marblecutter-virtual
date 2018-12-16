@@ -37,7 +37,7 @@ class VirtualCatalog(Catalog):
             global_min = src.get_tag_item("TIFFTAG_MINSAMPLEVALUE")
             global_max = src.get_tag_item("TIFFTAG_MAXSAMPLEVALUE")
 
-            for band in xrange(0, src.count):
+            for band in range(0, src.count):
                 self._meta["values"] = self._meta.get("values", {})
                 self._meta["values"][band] = {}
                 min_val = src.get_tag_item("STATISTICS_MINIMUM", bidx=band + 1)
