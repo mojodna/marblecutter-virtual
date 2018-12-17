@@ -30,6 +30,9 @@ IMAGE_FORMAT = Optimal()
 
 @lru_cache()
 def make_catalog(args):
+    if "url" not in args:
+        raise NoCatalogAvailable()
+
     try:
         return VirtualCatalog(
             args["url"],
@@ -39,7 +42,7 @@ def make_catalog(args):
             resample=args.get("resample"),
         )
     except Exception as e:
-        LOG.warn(e.message)
+        LOG.exception(e)
         raise NoCatalogAvailable()
 
 
