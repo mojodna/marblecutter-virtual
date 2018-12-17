@@ -178,6 +178,8 @@ simply with:
 S3_BUCKET=<staging-bucket> DOMAIN_NAME=<hostname> make deploy
 ```
 
+`<staging-bucket>` must be in the target AWS region (`AWS_DEFAULT_REGION`).
+
 NOTE: when setting up a Cloudfront distribution in front of a regional API
 Gateway endpoint (which is what this process does), an `Origin Custom Header`
 will be added: `X-Forwarded-Host` should be the hostname used for your
