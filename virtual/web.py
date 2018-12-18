@@ -4,11 +4,11 @@ from __future__ import absolute_import
 import logging
 
 from cachetools.func import lru_cache
-from flask import Markup, jsonify, render_template, request
+from flask import Flask, Markup, jsonify, render_template, request
 from marblecutter import NoCatalogAvailable, tiling
 from marblecutter.formats.optimal import Optimal
 from marblecutter.transformations import Image
-from marblecutter.web import app, url_for
+from marblecutter.web import bp, url_for
 from mercantile import Tile
 
 try:
@@ -26,6 +26,10 @@ LOG = logging.getLogger(__name__)
 
 IMAGE_TRANSFORMATION = Image()
 IMAGE_FORMAT = Optimal()
+
+app = Flask("marblecutter-virtual")
+app.register_blueprint(bp)
+app.url_map.strict_slashes = False
 
 
 @lru_cache()
@@ -79,17 +83,16 @@ def preview():
     # initialize the catalog so this route will fail if the source doesn't exist
     make_catalog(request.args)
 
-    with app.app_context():
-        return (
-            render_template(
-                "preview.html",
-                tilejson_url=Markup(
-                    url_for("meta", _external=True, _scheme="", **request.args)
-                ),
+    return (
+        render_template(
+            "preview.html",
+            tilejson_url=Markup(
+                url_for("meta", _external=True, _scheme="", **request.args)
             ),
-            200,
-            {"Content-Type": "text/html"},
-        )
+        ),
+        200,
+        {"Content-Type": "text/html"},
+    )
 
 
 @app.route("/tiles/<int:z>/<int:x>/<int:y>")
