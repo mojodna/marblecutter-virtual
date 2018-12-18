@@ -89,6 +89,7 @@ def preview():
             tilejson_url=Markup(
                 url_for("meta", _external=True, _scheme="", **request.args)
             ),
+            source_url=request.args["url"],
         ),
         200,
         {"Content-Type": "text/html"},
