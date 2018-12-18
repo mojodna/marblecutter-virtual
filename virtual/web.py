@@ -4,7 +4,7 @@ from __future__ import absolute_import
 import logging
 
 from cachetools.func import lru_cache
-from flask import Flask, Markup, jsonify, render_template, request
+from flask import Flask, Markup, jsonify, redirect, render_template, request
 from marblecutter import NoCatalogAvailable, tiling
 from marblecutter.formats.optimal import Optimal
 from marblecutter.transformations import Image
@@ -50,6 +50,11 @@ def make_catalog(args):
         raise NoCatalogAvailable()
 
 
+@app.route("/")
+def index():
+    return (render_template("index.html"), 200, {"Content-Type": "text/html"})
+
+
 @app.route("/tiles/")
 def meta():
     catalog = make_catalog(request.args)
@@ -80,8 +85,11 @@ def bounds():
 
 @app.route("/preview")
 def preview():
-    # initialize the catalog so this route will fail if the source doesn't exist
-    make_catalog(request.args)
+    try:
+        # initialize the catalog so this route will fail if the source doesn't exist
+        make_catalog(request.args)
+    except Exception:
+        return redirect(url_for("index"), code=303)
 
     return (
         render_template(

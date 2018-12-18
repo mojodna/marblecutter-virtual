@@ -1,0 +1,90 @@
+<html>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"
+    />
+    <style>
+      html, body, .container {
+        height: 100%;
+      }
+
+      body {
+        font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+      }
+
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      fieldset {
+        border-style: solid;
+        border-color: #999;
+        border-radius: 5px;
+        border-width: 1px;
+      }
+
+      legend {
+        border: none;
+        color: #333;
+        font-weight: bold;
+        padding: 0.2em 0.8em;
+      }
+
+      label {
+        font-size: 0.9em;
+        clear: both;
+        float: left;
+        color: #666;
+        margin: 5px auto;
+      }
+
+      label input.wide {
+        display: block;
+        clear: left;
+      }
+
+      .submit {
+        clear: both;
+        float: right;
+      }
+    </style>
+  </head>
+
+  <body>
+    <form class="container" action="{{ url_for("preview") }}">
+    <fieldset>
+      <legend>Preview</legend>
+      
+      <label>Cloud-optimized GeoTIFF URL <input class="wide" type="text" name="url" size="64" placeholder="https://..."></label>
+      <label>Linear stretch <input type="checkbox" name="linearStretch" value="true"></label>
+      <label>RGB order <input type="text" name="rgb" value="1,2,3" size="6"></label>
+      <label>Custom NODATA value <input type="text" name="nodata" value="" size="1"></label>
+      <label>Resampling method
+        <select name="resample">
+          <option value=""></option>
+          <option value="nearest">nearest</option>
+          <option value="bilinear">bilinear</option>
+          <option value="cubic">cubic</option>
+          <option value="cubic_spline">cubic spline</option>
+          <option value="lanczos">lanczos</option>
+          <option value="average">average</option>
+          <option value="mode">mode</option>
+          <option value="gauss">gauss</option>
+          <option value="max">max</option>
+          <option value="min">min</option>
+          <option value="med">med</option>
+          <option value="q1">q1</option>
+          <option value="q3">q3</option>
+        </select>
+      </label>
+
+      <div class="submit">
+        <input type="submit" value="Preview">
+      </div>
+    </fieldset>
+  </div>
+  </body>
+</html>
