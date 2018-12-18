@@ -51,7 +51,6 @@ Resources:
           # GDAL_HTTP_VERSION: 2
           VSI_CACHE: TRUE
           VSI_CACHE_SIZE: 500000000
-          API_GATEWAY_BASE_PATH: Prod
       Timeout: 15
       MemorySize: 1536
       Events:
