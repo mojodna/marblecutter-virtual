@@ -45,10 +45,11 @@ Resources:
           AWS_REQUEST_PAYER: requester
           CPL_TMPDIR: /tmp
           GDAL_CACHEMAX: 75%
+          GDAL_DATA: /var/task/rasterio/gdal_data
           GDAL_DISABLE_READDIR_ON_OPEN: TRUE
           GDAL_HTTP_MERGE_CONSECUTIVE_RANGES: YES
           # requires nghttp2 support
-          # GDAL_HTTP_VERSION: 2
+          GDAL_HTTP_VERSION: 2
           VSI_CACHE: TRUE
           VSI_CACHE_SIZE: 500000000
       Timeout: 15
