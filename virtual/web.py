@@ -5,6 +5,7 @@ import logging
 
 from cachetools.func import lru_cache
 from flask import Flask, Markup, jsonify, redirect, render_template, request
+from flask_cors import CORS
 from marblecutter import NoCatalogAvailable, tiling
 from marblecutter.formats.optimal import Optimal
 from marblecutter.transformations import Image
@@ -30,6 +31,7 @@ IMAGE_FORMAT = Optimal()
 app = Flask("marblecutter-virtual")
 app.register_blueprint(bp)
 app.url_map.strict_slashes = False
+CORS(app, send_wildcard=True)
 
 
 @lru_cache()
