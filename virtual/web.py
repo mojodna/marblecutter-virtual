@@ -34,7 +34,7 @@ app.url_map.strict_slashes = False
 
 @lru_cache()
 def make_catalog(args):
-    if "url" not in args:
+    if args.get("url", "") == "":
         raise NoCatalogAvailable()
 
     try:
