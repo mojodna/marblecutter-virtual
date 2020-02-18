@@ -17,8 +17,9 @@ class VirtualCatalog(Catalog):
     _nodata = None
     _linear_stretch = None
     _resample = None
+    _expr = None
 
-    def __init__(self, uri, rgb=None, nodata=None, linear_stretch=None, resample=None):
+    def __init__(self, uri, rgb=None, nodata=None, linear_stretch=None, resample=None, expr=None):
         self._uri = uri
 
         if rgb:
@@ -29,6 +30,9 @@ class VirtualCatalog(Catalog):
 
         if linear_stretch:
             self._linear_stretch = linear_stretch
+
+        if expr:
+            self._expr = expr
 
         try:
             # test whether provided resampling method is valid
@@ -95,6 +99,9 @@ class VirtualCatalog(Catalog):
 
         if self._resample is not None:
             recipes["resample"] = self._resample
+
+        if self._expr is not None:
+            recipes["expr"] = self._expr
 
         yield Source(
             url=self._uri,
