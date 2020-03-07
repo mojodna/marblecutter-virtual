@@ -46,6 +46,7 @@ def make_catalog(args):
             nodata=args.get("nodata"),
             linear_stretch=args.get("linearStretch"),
             resample=args.get("resample"),
+            expr=args.get("expr", None)
         )
     except Exception as e:
         LOG.exception(e)
