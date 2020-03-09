@@ -23,6 +23,7 @@ except ImportError:
 
 from .catalogs import VirtualCatalog
 
+logging.basicConfig()
 LOG = logging.getLogger(__name__)
 
 IMAGE_TRANSFORMATION = Image()
