@@ -1,4 +1,4 @@
 -r requirements.txt
 
 gevent
-gunicorn
+gunicorn<20
