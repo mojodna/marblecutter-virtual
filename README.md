@@ -136,6 +136,18 @@ See tile parameters.
 
 `http://localhost:8000/preview?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif`
 
+### `/debug` - Debug
+
+Returns validation information from cog validator (see https://github.com/rouault/cog_validator).
+
+#### Parameters
+
+* `url` - a URL to a COG. Required.
+
+#### Example
+
+`http://localhost:8000/debug?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif`
+
 ## Deploying to AWS
 
 marblecutter-virtual is deployed using the [AWS Serverless Application Model

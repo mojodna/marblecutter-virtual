@@ -12,6 +12,8 @@ from marblecutter.transformations import Image
 from marblecutter.web import bp, url_for
 from mercantile import Tile
 
+from .validate_cloud_optimized_geotiff import validate
+
 try:
     from urllib.parse import urlparse, urlencode
     from urllib.request import urlopen, Request
@@ -30,6 +32,7 @@ IMAGE_FORMAT = Optimal()
 
 app = Flask("marblecutter-virtual")
 app.register_blueprint(bp)
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
 CORS(app, send_wildcard=True)
 
@@ -124,3 +127,11 @@ def render_png(z, x, y, scale=1):
     headers.update(catalog.headers)
 
     return data, 200, headers
+
+
+@app.route("/debug/")
+def debug():
+
+    warnings, errors, details = validate(request.args["url"])
+
+    return jsonify({"warnings": warnings, "errors": errors, "details": details})

@@ -7,3 +7,4 @@ numpy
 serverless-wsgi
 # temporary workaround for https://github.com/mapbox/rasterio/issues/1651
 mock
+pygdal ~= 2.3.2
