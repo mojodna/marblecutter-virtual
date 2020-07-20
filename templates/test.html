@@ -1,0 +1,16 @@
+<html>
+
+  <body style="background: red">
+    <!-- Red, Green, Blue -->
+    <img src="/stac/14/4096/6048?url=https://sat-api.developmentseed.org/collections/landsat-8-l1/items&expr=B4,B3,B2&jq=sort_by(.properties.datetime)%20%7C%20reverse%20%7C%20group_by(.properties%5B%22eo%3Arow%22%5D%20%2B%20.properties%5B%22eo%3Acolumn%22%5D)%20%7C%20map(.%5B0%5D)">
+
+    <!-- NIR, Green, Blue -->
+    <img src="/stac/14/4096/6048?url=https://sat-api.developmentseed.org/collections/landsat-8-l1/items&expr=B5,B3,B2&jq=sort_by(.properties.datetime)%20%7C%20reverse%20%7C%20group_by(.properties%5B%22eo%3Arow%22%5D%20%2B%20.properties%5B%22eo%3Acolumn%22%5D)%20%7C%20map(.%5B0%5D)">
+
+    <!-- NDVI -->
+    <img src="/stac/14/4096/6048?url=https://sat-api.developmentseed.org/collections/landsat-8-l1/items&expr=(B5[0]-B4)%2F(B5[0]%2BB4[0])&jq=sort_by(.properties.datetime)%20%7C%20reverse%20%7C%20group_by(.properties%5B%22eo%3Arow%22%5D%20%2B%20.properties%5B%22eo%3Acolumn%22%5D)%20%7C%20map(.%5B0%5D)">
+
+    <!-- NDVI with First-Band for each Asset Implied -->
+    <img src="/stac/14/4096/6048?url=https://sat-api.developmentseed.org/collections/landsat-8-l1/items&expr=(B5-B4)%2F(B5%2BB4)&jq=sort_by(.properties.datetime)%20%7C%20reverse%20%7C%20group_by(.properties%5B%22eo%3Arow%22%5D%20%2B%20.properties%5B%22eo%3Acolumn%22%5D)%20%7C%20map(.%5B0%5D)">
+  </body>
+</html>

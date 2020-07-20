@@ -1,9 +1,13 @@
+affine
 cachetools ~= 2.0.0
 flask-cors
+jq
 # marblecutter[web] ~= 0.3.1
 https://github.com/mojodna/marblecutter/archive/5b9040b.tar.gz#egg=marblecutter[web]
-rasterio[s3] ~= 1.0
+mercantile
 numpy
+rasterio[s3] ~= 1.0
+shapely
 serverless-wsgi
 # temporary workaround for https://github.com/mapbox/rasterio/issues/1651
 mock
