@@ -136,6 +136,20 @@ See tile parameters.
 
 `http://localhost:8000/preview?url=https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fplanet-disaster-data%2Fhurricane-harvey%2FSkySat_Freeport_s03_20170831T162740Z3.tif`
 
+### `/stac` - SpatioTemporal Asset Catalog
+Generate a tile from the automatic mosaicing of STAC assets
+
+#### Parameters
+* `url` - a URL to a STAC API Feature Collection of STAC Features
+* `datetime` - an optional datetime filter to pass along to the STAC API
+* `expr` - an optional band math expression where a band is referenced by `name[band_number]`.  For example `Analytic[0]` would refer to the first band of the assset called `Analytic`.
+* `jq` - an optional [jq](https://stedolan.github.io/jq/) expression for filtering and ordering the STAC catalog search results.  For example `sort_by(.properties.datetime) | reverse | group_by(.properties["eo:row"] + .properties["eo:column"]) | map(.[0])` is used to get the newest capture for each Landsat 8 scene.
+
+#### Known Limitations of STAC Support
+- Mask is not carried over when doing band expressions across multiple assets
+- Band math does not work across assets with different resolutions
+
+
 ## Deploying to AWS
 
 marblecutter-virtual is deployed using the [AWS Serverless Application Model
